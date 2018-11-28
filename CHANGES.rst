@@ -1,3 +1,8 @@
+v1.1.1
+======
+
+Fix package metadata to include the module.
+
 v1.1.0
 ======
 

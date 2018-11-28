@@ -1,9 +1,9 @@
+import textwrap
 import contextlib
-import sys
-import subprocess
 
 import pytest
 import docutils.core
+import importlib_metadata
 
 
 def pytest_collect_file(path, parent):
@@ -36,10 +36,19 @@ class CheckdocsItem(pytest.Item, pytest.File):
         yield
         docutils.utils.Reporter.system_message = orig
 
+    def _find_local_distribution(self):
+        root = importlib_metadata._hooks.Path('.')
+        paths = importlib_metadata._hooks.MetadataPathFinder \
+            ._search_path(root, '.*')
+        dist, = map(importlib_metadata._hooks.PathDistribution, paths)
+        return dist
+
     def get_long_description(self):
-        cmd = [sys.executable, 'setup.py', '--long-description']
-        return subprocess.check_output(
-            cmd, universal_newlines=True)
+        # egg-info
+        desc = self._find_local_distribution().metadata['Description']
+        # the format is to indent lines 2 and later with 8 spaces, so
+        # add 8 spaces to the beginning and then dedent.
+        return textwrap.dedent(' ' * 8 + desc)
 
     @staticmethod
     def rst2html(value):

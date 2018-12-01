@@ -14,13 +14,13 @@ def pytest_collect_file(path, parent):
 class CheckdocsItem(pytest.Item, pytest.File):
 
     def runtest(self):
-        self.reports = []
-        with self.monkey_patch_system_message():
+        with self.monkey_patch_system_message() as reports:
             self.rst2html(self.get_long_description())
-        assert not self.reports
+        assert not reports
 
     @contextlib.contextmanager
     def monkey_patch_system_message(self):
+        reports = []
         orig = docutils.utils.Reporter.system_message
 
         def system_message(reporter, level, message, *children, **kwargs):
@@ -28,12 +28,12 @@ class CheckdocsItem(pytest.Item, pytest.File):
             if level >= reporter.WARNING_LEVEL:
                 # All reST failures preventing doc publishing go to reports
                 # and thus will result to failed checkdocs run
-                self.reports.append(message)
+                reports.append(message)
 
             return result
 
         docutils.utils.Reporter.system_message = system_message
-        yield
+        yield reports
         docutils.utils.Reporter.system_message = orig
 
     def _find_local_distribution(self):

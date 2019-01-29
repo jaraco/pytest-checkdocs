@@ -36,16 +36,10 @@ class CheckdocsItem(pytest.Item, pytest.File):
         yield reports
         docutils.utils.Reporter.system_message = orig
 
-    def _find_local_distribution(self):
-        root = importlib_metadata._hooks.Path('.')
-        paths = importlib_metadata._hooks.MetadataPathFinder \
-            ._search_path(root, '.*')
-        dist, = map(importlib_metadata._hooks.PathDistribution, paths)
-        return dist
-
     def get_long_description(self):
         # egg-info
-        desc = self._find_local_distribution().metadata['Description']
+        dist = importlib_metadata.api.local_distribution()
+        desc = dist.metadata['Description']
         # the format is to indent lines 2 and later with 8 spaces, so
         # add 8 spaces to the beginning and then dedent.
         return textwrap.dedent(' ' * 8 + desc)

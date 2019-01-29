@@ -1,3 +1,8 @@
+v1.2.0
+======
+
+Rely on importlib_metadata 0.8 to find local distribution.
+
 v1.1.1
 ======
 

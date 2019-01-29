@@ -1,5 +1,6 @@
 import textwrap
 import contextlib
+import itertools
 
 import pytest
 import docutils.core
@@ -36,10 +37,18 @@ class CheckdocsItem(pytest.Item, pytest.File):
         yield reports
         docutils.utils.Reporter.system_message = orig
 
+    def _find_local_distribution(self):
+        resolvers = importlib_metadata.Distribution._discover_resolvers()
+        dists = itertools.chain.from_iterable(
+            resolver(path=['.', 'src'])
+            for resolver in resolvers
+        )
+        dist, = dists
+        return dist
+
     def get_long_description(self):
         # egg-info
-        dist = importlib_metadata.api.local_distribution()
-        desc = dist.metadata['Description']
+        desc = self._find_local_distribution().metadata['Description']
         # the format is to indent lines 2 and later with 8 spaces, so
         # add 8 spaces to the beginning and then dedent.
         return textwrap.dedent(' ' * 8 + desc)

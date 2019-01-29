@@ -3,6 +3,10 @@ v1.2.0
 
 Rely on importlib_metadata 0.8 to find local distribution.
 
+Add hacky workaround for when package uses 'src' package layout. See
+`importlib_metadata 42 <https://gitlab.com/python-devs/importlib_metadata/issues/42>`_
+for more details.
+
 v1.1.1
 ======
 

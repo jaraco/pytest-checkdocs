@@ -1,3 +1,8 @@
+v1.2.1
+======
+
+#1: Fix issue when run against importlib_metadata 0.21.
+
 v1.2.0
 ======
 

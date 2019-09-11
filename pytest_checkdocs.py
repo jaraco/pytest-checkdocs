@@ -1,6 +1,5 @@
 import textwrap
 import contextlib
-import itertools
 
 import pytest
 import docutils.core
@@ -38,12 +37,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
         docutils.utils.Reporter.system_message = orig
 
     def _find_local_distribution(self):
-        resolvers = importlib_metadata.Distribution._discover_resolvers()
-        dists = itertools.chain.from_iterable(
-            resolver(path=['.', 'src'])
-            for resolver in resolvers
-        )
-        dist, = dists
+        dist, = importlib_metadata.distributions(path=['.', 'src'])
         return dist
 
     def get_long_description(self):

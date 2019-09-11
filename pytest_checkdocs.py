@@ -12,7 +12,6 @@ def pytest_collect_file(path, parent):
 
 
 class CheckdocsItem(pytest.Item, pytest.File):
-
     def runtest(self):
         with self.monkey_patch_system_message() as reports:
             self.rst2html(self.get_long_description())
@@ -51,7 +50,6 @@ class CheckdocsItem(pytest.Item, pytest.File):
     def rst2html(value):
         docutils_settings = {}
         parts = docutils.core.publish_parts(
-            source=value,
-            writer_name="html4css1",
-            settings_overrides=docutils_settings)
+            source=value, writer_name="html4css1", settings_overrides=docutils_settings
+        )
         return parts['whole']

@@ -1,3 +1,8 @@
+v1.2.2
+======
+
+#2: Workaround for ValueError when running under Python 3.8.
+
 v1.2.1
 ======
 

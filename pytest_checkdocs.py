@@ -4,6 +4,7 @@ import contextlib
 import pytest
 import docutils.core
 import importlib_metadata
+from more_itertools import first
 
 
 def pytest_collect_file(path, parent):
@@ -36,8 +37,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
         docutils.utils.Reporter.system_message = orig
 
     def _find_local_distribution(self):
-        dist, = importlib_metadata.distributions(path=['.', 'src'])
-        return dist
+        return first(importlib_metadata.distributions(path=['.', 'src']))
 
     def get_long_description(self):
         # egg-info

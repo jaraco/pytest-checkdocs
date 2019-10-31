@@ -1,3 +1,9 @@
+v1.2.3
+======
+
+Rely on docutils 0.15 to include fix for
+`docutils 348 <https://sourceforge.net/p/docutils/bugs/348/>`_.
+
 v1.2.2
 ======
 

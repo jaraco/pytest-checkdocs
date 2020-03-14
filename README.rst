@@ -1,7 +1,13 @@
 .. image:: https://img.shields.io/pypi/v/pytest-checkdocs.svg
-   :target: https://pypi.org/project/pytest-checkdocs
+   :target: `PyPI link`_
 
 .. image:: https://img.shields.io/pypi/pyversions/pytest-checkdocs.svg
+   :target: `PyPI link`_
+
+.. _PyPI link: https://pypi.org/project/pytest-checkdocs
+
+.. image:: https://dev.azure.com/jaraco/pytest-checkdocs/_apis/build/status/jaraco.pytest-checkdocs?branchName=master
+   :target: https://dev.azure.com/jaraco/pytest-checkdocs/_build/latest?definitionId=1&branchName=master
 
 .. image:: https://img.shields.io/travis/jaraco/pytest-checkdocs/master.svg
    :target: https://travis-ci.org/jaraco/pytest-checkdocs

@@ -9,7 +9,11 @@ from more_itertools import first
 
 def pytest_collect_file(path, parent):
     """Filter files down to which ones should be checked."""
-    return CheckdocsItem(path, parent) if path.basename == 'setup.py' else None
+    return (
+        CheckdocsItem.from_parent(parent, name=path)
+        if path.basename == 'setup.py'
+        else None
+    )
 
 
 class CheckdocsItem(pytest.Item, pytest.File):

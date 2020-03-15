@@ -10,13 +10,13 @@ from more_itertools import first
 def pytest_collect_file(path, parent):
     """Filter files down to which ones should be checked."""
     return (
-        CheckdocsItem.from_parent(parent, name=path)
+        CheckdocsItem.from_parent(parent, fspath=path)
         if path.basename == 'setup.py'
         else None
     )
 
 
-class CheckdocsItem(pytest.Item, pytest.File):
+class CheckdocsItem(pytest.Item):
     def runtest(self):
         with self.monkey_patch_system_message() as reports:
             self.rst2html(self.get_long_description())

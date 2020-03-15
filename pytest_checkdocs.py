@@ -10,10 +10,15 @@ from more_itertools import first
 def pytest_collect_file(path, parent):
     """Filter files down to which ones should be checked."""
     return (
-        CheckdocsItem.from_parent(parent, fspath=path)
+        CheckdocsFile.from_parent(parent, fspath=path)
         if path.basename == 'setup.py'
         else None
     )
+
+
+class CheckdocsFile(pytest.File):
+    def collect(self):
+        return CheckdocsItem.from_parent(self.parent)
 
 
 class CheckdocsItem(pytest.Item):

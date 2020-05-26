@@ -1,15 +1,14 @@
 import textwrap
 import contextlib
-import sys
 
 import pytest
 import docutils.core
 from more_itertools import first
 
-if sys.version_info >= (3, 8):
-    from importlib import metadata as importlib_metadata
-else:
-    import importlib_metadata
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata
 
 
 def pytest_collect_file(path, parent):
@@ -62,7 +61,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
         docutils.utils.Reporter.system_message = orig
 
     def _find_local_distribution(self):
-        return first(importlib_metadata.distributions(path=['.', 'src']))
+        return first(metadata.distributions(path=['.', 'src']))
 
     def get_long_description(self):
         # egg-info

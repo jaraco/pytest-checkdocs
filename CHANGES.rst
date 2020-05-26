@@ -1,3 +1,9 @@
+v2.1.0
+======
+
+#3: Add workaround for deprecation warning.
+#4: Only require importlib_metadata on older Pythons.
+
 v2.0.0
 ======
 

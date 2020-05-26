@@ -1,3 +1,8 @@
+v2.1.1
+======
+
+Feed mypy hobgoblins.
+
 v2.1.0
 ======
 

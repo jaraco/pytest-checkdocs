@@ -6,9 +6,9 @@ import docutils.core
 from more_itertools import first
 
 try:
-    from importlib import metadata
+    from importlib import metadata  # type: ignore
 except ImportError:
-    import importlib_metadata as metadata
+    import importlib_metadata as metadata  # type: ignore
 
 
 def pytest_collect_file(path, parent):

@@ -9,10 +9,30 @@ from more_itertools import first
 
 def pytest_collect_file(path, parent):
     """Filter files down to which ones should be checked."""
-    return CheckdocsItem(path, parent) if path.basename == 'setup.py' else None
+    return (
+        CheckdocsItem.from_parent(parent, fspath=path)
+        if path.basename == 'setup.py'
+        else None
+    )
 
 
 class CheckdocsItem(pytest.Item, pytest.File):
+    def __init__(self, fspath, parent):
+        # ugly hack to add support for fspath parameter
+        # Ref pytest-dev/pytest#6928
+        super().__init__(fspath, parent)
+
+    @classmethod
+    def from_parent(cls, parent, fspath):
+        """
+        Compatibility shim to support
+        """
+        try:
+            return super().from_parent(parent, fspath=fspath)
+        except AttributeError:
+            # pytest < 5.4
+            return cls(fspath, parent)
+
     def runtest(self):
         with self.monkey_patch_system_message() as reports:
             self.rst2html(self.get_long_description())

@@ -1,3 +1,8 @@
+v2.2.0
+======
+
+Added degenerate support for markdown in the check.
+
 v2.1.1
 ======
 

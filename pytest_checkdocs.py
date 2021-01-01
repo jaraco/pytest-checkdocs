@@ -1,5 +1,6 @@
 import textwrap
 import contextlib
+import re
 
 import pytest
 import docutils.core
@@ -20,6 +21,18 @@ def pytest_collect_file(path, parent):
     )
 
 
+class Description(str):
+    @classmethod
+    def from_md(cls, md):
+        raw = md['Description']
+        # the format is to indent lines 2 and later with 8 spaces, so
+        # add 8 spaces to the beginning and then dedent.
+        cleaned = textwrap.dedent(' ' * 8 + raw)
+        desc = cls(cleaned)
+        desc.content_type = md.get('Description-Content-Type', 'text/x-rst')
+        return desc
+
+
 class CheckdocsItem(pytest.Item, pytest.File):
     def __init__(self, fspath, parent):
         # ugly hack to add support for fspath parameter
@@ -38,8 +51,16 @@ class CheckdocsItem(pytest.Item, pytest.File):
             return cls(fspath, parent)
 
     def runtest(self):
+        desc = self.get_long_description()
+        method_name = f"run_{re.sub('[-/]', '_', desc.content_type)}"
+        getattr(self, method_name)(desc)
+
+    def run_text_markdown(self, desc):
+        "stubbed"
+
+    def run_text_x_rst(self, desc):
         with self.monkey_patch_system_message() as reports:
-            self.rst2html(self.get_long_description())
+            self.rst2html(desc)
         assert not reports
 
     @contextlib.contextmanager
@@ -64,11 +85,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
         return first(metadata.distributions(path=['.', 'src']))
 
     def get_long_description(self):
-        # egg-info
-        desc = self._find_local_distribution().metadata['Description']
-        # the format is to indent lines 2 and later with 8 spaces, so
-        # add 8 spaces to the beginning and then dedent.
-        return textwrap.dedent(' ' * 8 + desc)
+        return Description.from_md(self._find_local_distribution().metadata)
 
     @staticmethod
     def rst2html(value):

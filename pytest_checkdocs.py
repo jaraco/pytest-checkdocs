@@ -20,7 +20,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
     def __init__(self, fspath, parent):
         # ugly hack to add support for fspath parameter
         # Ref pytest-dev/pytest#6928
-        super().__init__(fspath, parent)
+        super(CheckdocsItem, self).__init__(fspath, parent)
 
     @classmethod
     def from_parent(cls, parent, fspath):
@@ -28,7 +28,7 @@ class CheckdocsItem(pytest.Item, pytest.File):
         Compatibility shim to support
         """
         try:
-            return super().from_parent(parent, fspath=fspath)
+            return super(CheckdocsItem, cls).from_parent(parent, fspath=fspath)
         except AttributeError:
             # pytest < 5.4
             return cls(fspath, parent)

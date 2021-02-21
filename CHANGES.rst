@@ -1,3 +1,8 @@
+v1.2.5
+======
+
+Restore compatibility with Python 2.7.
+
 v1.2.4
 ======
 

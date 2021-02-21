@@ -1,3 +1,8 @@
+v1.2.4
+======
+
+#3: Backport workaround for deprecation warning (now an error).
+
 v2.2.0
 ======
 

@@ -1,3 +1,9 @@
+v2.3.0
+======
+
+Refreshed package. Now ``pytest_checkdocs`` is a package
+instead of a module.
+
 v1.2.5
 ======
 

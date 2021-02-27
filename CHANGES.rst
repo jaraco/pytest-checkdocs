@@ -1,3 +1,11 @@
+v2.4.0
+======
+
+Rely on `pep517 <https://pypi.org/project/pep517>`_ to load
+project metadata. Avoids issue where other stray metadata
+might be lying around. Improves support for projects built
+by other tools.
+
 v2.3.0
 ======
 

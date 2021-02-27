@@ -4,12 +4,8 @@ import re
 
 import pytest
 import docutils.core
-from more_itertools import first
-
-try:
-    from importlib import metadata  # type: ignore
-except ImportError:
-    import importlib_metadata as metadata  # type: ignore
+import pep517.meta
+from jaraco.functools import pass_none
 
 
 def pytest_collect_file(path, parent):
@@ -24,13 +20,21 @@ def pytest_collect_file(path, parent):
 class Description(str):
     @classmethod
     def from_md(cls, md):
-        raw = md['Description']
-        # the format is to indent lines 2 and later with 8 spaces, so
-        # add 8 spaces to the beginning and then dedent.
-        cleaned = textwrap.dedent(' ' * 8 + raw)
+        cleaned = cls.repair_field(md.get('Description')) or md.get_payload()
         desc = cls(cleaned)
         desc.content_type = md.get('Description-Content-Type', 'text/x-rst')
         return desc
+
+    @staticmethod
+    @pass_none
+    def repair_field(raw):
+        """
+        When the description is found as a field, the first
+        line is not indented, but subsequent lines are indented
+        with 8 spaces. Adjust by indenting the first line
+        8 spaces and then dedent.
+        """
+        return textwrap.dedent(' ' * 8 + raw)
 
 
 class CheckdocsItem(pytest.Item, pytest.File):
@@ -81,11 +85,8 @@ class CheckdocsItem(pytest.Item, pytest.File):
         yield reports
         docutils.utils.Reporter.system_message = orig
 
-    def _find_local_distribution(self):
-        return first(metadata.distributions(path=['.', 'src']))
-
     def get_long_description(self):
-        return Description.from_md(self._find_local_distribution().metadata)
+        return Description.from_md(pep517.meta.load('.').metadata)
 
     @staticmethod
     def rst2html(value):

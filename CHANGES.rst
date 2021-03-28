@@ -1,3 +1,10 @@
+v2.5.0
+======
+
+#9: Now CheckdocsItem is a simple item and is discovered if
+any Python project file (``pyproject.toml``, ``setup.cfg``,
+``setup.py``) is found. Also fixes #8.
+
 v2.4.0
 ======
 

@@ -8,13 +8,13 @@ import pep517.meta
 from jaraco.functools import pass_none
 
 
+project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
+
+
 def pytest_collect_file(path, parent):
-    """Filter files down to which ones should be checked."""
-    return (
-        CheckdocsItem.from_parent(parent, fspath=path)
-        if path.basename == 'setup.py'
-        else None
-    )
+    if path.basename not in project_files:
+        return
+    return CheckdocsItem.from_parent(parent, name='project')
 
 
 class Description(str):
@@ -37,23 +37,7 @@ class Description(str):
         return textwrap.dedent(' ' * 8 + raw)
 
 
-class CheckdocsItem(pytest.Item, pytest.File):
-    def __init__(self, fspath, parent):
-        # ugly hack to add support for fspath parameter
-        # Ref pytest-dev/pytest#6928
-        super().__init__(fspath, parent)
-
-    @classmethod
-    def from_parent(cls, parent, fspath):
-        """
-        Compatibility shim to support
-        """
-        try:
-            return super().from_parent(parent, fspath=fspath)
-        except AttributeError:
-            # pytest < 5.4
-            return cls(fspath, parent)
-
+class CheckdocsItem(pytest.Item):
     def runtest(self):
         desc = self.get_long_description()
         method_name = f"run_{re.sub('[-/]', '_', desc.content_type)}"

@@ -34,7 +34,9 @@ class Description(str):
         with 8 spaces. Adjust by indenting the first line
         8 spaces and then dedent.
         """
-        return textwrap.dedent(' ' * 8 + raw)
+        indent = ' ' * 8
+        needs_dedent = '\n' + indent in raw
+        return textwrap.dedent(indent + raw) if needs_dedent else raw
 
 
 class CheckdocsItem(pytest.Item):

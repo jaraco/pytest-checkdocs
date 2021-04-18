@@ -1,3 +1,10 @@
+v2.6.0
+======
+
+* When dedenting a long description, avoid dedenting if
+  not needed, as found in experimental versions of
+  ``importlib_metadata``.
+
 v2.5.0
 ======
 

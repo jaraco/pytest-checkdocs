@@ -1,3 +1,9 @@
+v2.7.0
+======
+
+* Rely on importlib_metadata 4 to return clean metadata.
+  Fixes #10 by eliminating that functionality.
+
 v2.6.0
 ======
 

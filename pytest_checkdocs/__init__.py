@@ -1,11 +1,10 @@
-import textwrap
 import contextlib
 import re
 
 import pytest
 import docutils.core
 import pep517.meta
-from jaraco.functools import pass_none
+import importlib_metadata
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
@@ -20,23 +19,9 @@ def pytest_collect_file(path, parent):
 class Description(str):
     @classmethod
     def from_md(cls, md):
-        cleaned = cls.repair_field(md.get('Description')) or md.get_payload()
-        desc = cls(cleaned)
+        desc = cls(md.get('Description'))
         desc.content_type = md.get('Description-Content-Type', 'text/x-rst')
         return desc
-
-    @staticmethod
-    @pass_none
-    def repair_field(raw):
-        """
-        When the description is found as a field, the first
-        line is not indented, but subsequent lines are indented
-        with 8 spaces. Adjust by indenting the first line
-        8 spaces and then dedent.
-        """
-        indent = ' ' * 8
-        needs_dedent = '\n' + indent in raw
-        return textwrap.dedent(indent + raw) if needs_dedent else raw
 
 
 class CheckdocsItem(pytest.Item):
@@ -72,7 +57,7 @@ class CheckdocsItem(pytest.Item):
         docutils.utils.Reporter.system_message = orig
 
     def get_long_description(self):
-        return Description.from_md(pep517.meta.load('.').metadata)
+        return Description.from_md(ensure_clean(pep517.meta.load('.').metadata))
 
     @staticmethod
     def rst2html(value):
@@ -81,3 +66,16 @@ class CheckdocsItem(pytest.Item):
             source=value, writer_name="html4css1", settings_overrides=docutils_settings
         )
         return parts['whole']
+
+
+def ensure_clean(metadata):
+    """
+    On Python 3.8 and later, pep517.meta returns a PathDistribution
+    without clean metadata. Employ the adapter that comes with
+    importlib_metadata 4 to get clean metadata.
+    """
+    try:
+        metadata.json
+    except AttributeError:
+        metadata = importlib_metadata._adapters.Message(metadata)
+    return metadata

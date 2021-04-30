@@ -1,4 +1,3 @@
-import textwrap
 import contextlib
 import re
 
@@ -6,7 +5,6 @@ import pytest
 import docutils.core
 import pep517.meta
 import importlib_metadata
-from jaraco.functools import pass_none
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
@@ -24,19 +22,6 @@ class Description(str):
         desc = cls(md.get('Description'))
         desc.content_type = md.get('Description-Content-Type', 'text/x-rst')
         return desc
-
-    @staticmethod
-    @pass_none
-    def repair_field(raw):
-        """
-        When the description is found as a field, the first
-        line is not indented, but subsequent lines are indented
-        with 8 spaces. Adjust by indenting the first line
-        8 spaces and then dedent.
-        """
-        indent = ' ' * 8
-        needs_dedent = '\n' + indent in raw
-        return textwrap.dedent(indent + raw) if needs_dedent else raw
 
 
 class CheckdocsItem(pytest.Item):

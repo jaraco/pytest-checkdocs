@@ -1,9 +1,11 @@
 import contextlib
+import pathlib
 import re
+import tempfile
 
 import pytest
 import docutils.core
-import pep517.meta
+import build
 import importlib_metadata
 
 
@@ -57,7 +59,12 @@ class CheckdocsItem(pytest.Item):
         docutils.utils.Reporter.system_message = orig
 
     def get_long_description(self):
-        return Description.from_md(ensure_clean(pep517.meta.load('.').metadata))
+        builder = build.ProjectBuilder('.')
+        with tempfile.TemporaryDirectory() as tmpdir:
+            distribution = importlib_metadata.PathDistribution(
+                pathlib.Path(builder.metadata_path(tmpdir)),
+            )
+            return Description.from_md(distribution.metadata)
 
     @staticmethod
     def rst2html(value):
@@ -66,16 +73,3 @@ class CheckdocsItem(pytest.Item):
             source=value, writer_name="html4css1", settings_overrides=docutils_settings
         )
         return parts['whole']
-
-
-def ensure_clean(metadata):
-    """
-    On Python 3.8 and later, pep517.meta returns a PathDistribution
-    without clean metadata. Employ the adapter that comes with
-    importlib_metadata 4 to get clean metadata.
-    """
-    try:
-        metadata.json
-    except AttributeError:
-        metadata = importlib_metadata._adapters.Message(metadata)
-    return metadata

@@ -1,3 +1,8 @@
+v2.7.1
+======
+
+* #14: Suppress warnings in tomli (pypa/pep517#122).
+
 v2.7.0
 ======
 

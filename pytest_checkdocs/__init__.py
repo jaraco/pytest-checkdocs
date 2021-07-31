@@ -1,5 +1,6 @@
 import contextlib
 import re
+import warnings
 
 import pytest
 import docutils.core
@@ -8,6 +9,16 @@ import importlib_metadata
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
+
+
+@contextlib.contextmanager
+def _suppress_deprecation():
+    # pypa/pep517#122
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            'ignore', 'Text file object support is deprecated', module='tomli'
+        )
+        yield
 
 
 def pytest_collect_file(path, parent):
@@ -57,7 +68,8 @@ class CheckdocsItem(pytest.Item):
         docutils.utils.Reporter.system_message = orig
 
     def get_long_description(self):
-        return Description.from_md(ensure_clean(pep517.meta.load('.').metadata))
+        with _suppress_deprecation():
+            return Description.from_md(ensure_clean(pep517.meta.load('.').metadata))
 
     @staticmethod
     def rst2html(value):

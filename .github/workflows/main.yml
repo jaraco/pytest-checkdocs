@@ -17,6 +17,9 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          # fetch more than 1 in order to get recent version tag
+          fetch-depth: 100
       - name: Setup Python
         uses: actions/setup-python@v2
         with:

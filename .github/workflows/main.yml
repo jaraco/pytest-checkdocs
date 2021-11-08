@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          # fetch more than 1 in order to get recent version tag
-          fetch-depth: 100
+          # fetch all branches and tags (only way to get tags for versioning)
+          fetch-depth: 0
       - name: Setup Python
         uses: actions/setup-python@v2
         with:

@@ -1,3 +1,9 @@
+v2.8.0
+======
+
+* #17: Prefer `build <https://pypi.org/project/build>`_
+  for loading metadata.
+
 v2.7.1
 ======
 

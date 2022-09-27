@@ -4,8 +4,8 @@ import warnings
 
 import pytest
 import docutils.core
-import pep517.meta
 import importlib_metadata
+from build.util import project_wheel_metadata as load_metadata
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
@@ -69,7 +69,7 @@ class CheckdocsItem(pytest.Item):
 
     def get_long_description(self):
         with _suppress_deprecation():
-            return Description.from_md(ensure_clean(pep517.meta.load('.').metadata))
+            return Description.from_md(ensure_clean(load_metadata('.')))
 
     @staticmethod
     def rst2html(value):

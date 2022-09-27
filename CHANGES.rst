@@ -1,3 +1,8 @@
+v2.8.1
+======
+
+In README, present badge/link to the docs.
+
 v2.8.0
 ======
 

@@ -4,8 +4,9 @@ import warnings
 
 import pytest
 import docutils.core
-import importlib_metadata
 from build.util import project_wheel_metadata as load_metadata
+
+from .py310compat import metadata as md
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
@@ -89,5 +90,5 @@ def ensure_clean(metadata):
     try:
         metadata.json
     except AttributeError:
-        metadata = importlib_metadata._adapters.Message(metadata)
+        metadata = md._adapters.Message(metadata)
     return metadata

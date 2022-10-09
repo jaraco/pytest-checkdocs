@@ -1,3 +1,8 @@
+v2.9.0
+======
+
+Prefer ``importlib.metadata`` on Python 3.10 and later.
+
 v2.8.1
 ======
 

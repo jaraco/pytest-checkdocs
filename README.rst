@@ -1,10 +1,7 @@
 .. image:: https://img.shields.io/pypi/v/pytest-checkdocs.svg
-   :target: `PyPI link`_
+   :target: https://pypi.org/project/pytest-checkdocs
 
 .. image:: https://img.shields.io/pypi/pyversions/pytest-checkdocs.svg
-   :target: `PyPI link`_
-
-.. _PyPI link: https://pypi.org/project/pytest-checkdocs
 
 .. image:: https://github.com/jaraco/pytest-checkdocs/workflows/tests/badge.svg
    :target: https://github.com/jaraco/pytest-checkdocs/actions?query=workflow%3A%22tests%22

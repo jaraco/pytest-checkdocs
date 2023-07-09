@@ -33,6 +33,9 @@ nitpicky = True
 
 nitpick_ignore = [
     ('py:class', '_pytest.nodes.Item'),
+    ('py:class', 'Config'),
+    ('py:class', 'Path'),
+    ('py:class', 'Session'),
 ]
 
 # Include Python intersphinx mapping to prevent failures
@@ -44,3 +47,8 @@ intersphinx_mapping = {
 
 # Preserve authored syntax for defaults
 autodoc_preserve_defaults = True
+
+
+intersphinx_mapping.update(
+    pytest=('https://docs.pytest.org/en/latest/', None),
+)

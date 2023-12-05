@@ -3,7 +3,7 @@
 
 .. image:: https://img.shields.io/pypi/pyversions/pytest-checkdocs.svg
 
-.. image:: https://github.com/jaraco/pytest-checkdocs/workflows/tests/badge.svg
+.. image:: https://github.com/jaraco/pytest-checkdocs/actions/workflows/main.yml/badge.svg
    :target: https://github.com/jaraco/pytest-checkdocs/actions?query=workflow%3A%22tests%22
    :alt: tests
 

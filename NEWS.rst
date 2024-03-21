@@ -1,3 +1,12 @@
+v2.11.0
+=======
+
+Features
+--------
+
+- Bumped dependency on build and removed now unnecessary compatibility wrapper.
+
+
 v2.10.1
 =======
 

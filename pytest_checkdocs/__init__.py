@@ -5,7 +5,7 @@ import pytest
 import docutils.core
 from build.util import project_wheel_metadata as load_metadata
 
-from .py310compat import metadata as md
+from .compat.py310 import metadata as md
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'

@@ -1,0 +1,1 @@
+Bumped dependency on build and removed now unnecessary compatibility wrapper.

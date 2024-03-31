@@ -3,7 +3,7 @@ import re
 
 import pytest
 import docutils.core
-from build.util import project_wheel_metadata as load_metadata
+from jaraco.packaging import metadata
 
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
@@ -56,7 +56,7 @@ class CheckdocsItem(pytest.Item):
         docutils.utils.Reporter.system_message = orig
 
     def get_long_description(self):
-        return Description.from_md(load_metadata('.'))
+        return Description.from_md(metadata.load('.'))
 
     @staticmethod
     def rst2html(value):

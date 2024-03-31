@@ -1,1 +1,0 @@
-Rely on jaraco.packaging.metadata for loading metadata.

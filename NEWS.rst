@@ -1,3 +1,12 @@
+v2.12.0
+=======
+
+Features
+--------
+
+- Rely on jaraco.packaging.metadata for loading metadata. (#19)
+
+
 v2.11.0
 =======
 

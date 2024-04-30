@@ -1,1 +1,0 @@
-Updated collection to prefer 'file_path' over 'path'.

@@ -1,3 +1,12 @@
+v2.13.0
+=======
+
+Features
+--------
+
+- Updated collection to prefer 'file_path' over 'path'. (#23)
+
+
 v2.12.0
 =======
 

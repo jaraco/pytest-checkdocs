@@ -1,4 +1,5 @@
 import contextlib
+import pathlib
 import re
 
 import pytest
@@ -9,8 +10,8 @@ from jaraco.packaging import metadata
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
 
 
-def pytest_collect_file(path, parent):
-    if path.basename not in project_files:
+def pytest_collect_file(file_path: pathlib.Path, parent):
+    if file_path.name not in project_files:
         return
     return CheckdocsItem.from_parent(parent, name='project')
 

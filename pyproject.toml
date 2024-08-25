@@ -71,4 +71,9 @@ type = [
 [project.entry-points]
 pytest11 = {checkdocs = "pytest_checkdocs"}
 
+
 [tool.setuptools_scm]
+
+
+[tool.pytest-enabler.mypy]
+# Disabled due to jaraco/skeleton#143

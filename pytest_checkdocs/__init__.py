@@ -1,49 +1,72 @@
+from __future__ import annotations
+
 import contextlib
 import pathlib
 import re
+import sys
+from collections.abc import Iterator
+from typing import TYPE_CHECKING, Any
 
-import pytest
 import docutils.core
+import docutils.nodes
+import docutils.utils
+import pytest
 from jaraco.packaging import metadata
 
+if TYPE_CHECKING:
+    if sys.version_info >= (3, 12):
+        from importlib.metadata import PackageMetadata
+    else:
+        from importlib_metadata import PackageMetadata
+
+    from _pytest.nodes import Node
+    from typing_extensions import Self
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
 
 
-def pytest_collect_file(file_path: pathlib.Path, parent):
+def pytest_collect_file(file_path: pathlib.Path, parent: Node) -> CheckdocsItem | None:
     if file_path.name not in project_files:
-        return
+        return None
     return CheckdocsItem.from_parent(parent, name='project')
 
 
 class Description(str):
+    content_type: str = ""
+
     @classmethod
-    def from_md(cls, md):
+    def from_md(cls, md: PackageMetadata) -> Self:
         desc = cls(md.get('Description'))
         desc.content_type = md.get('Description-Content-Type', 'text/x-rst')
         return desc
 
 
 class CheckdocsItem(pytest.Item):
-    def runtest(self):
+    def runtest(self) -> None:
         desc = self.get_long_description()
         method_name = f"run_{re.sub('[-/]', '_', desc.content_type)}"
         getattr(self, method_name)(desc)
 
-    def run_text_markdown(self, desc):
+    def run_text_markdown(self, desc: str) -> None:
         "stubbed"
 
-    def run_text_x_rst(self, desc):
+    def run_text_x_rst(self, desc: str) -> None:
         with self.monkey_patch_system_message() as reports:
             self.rst2html(desc)
         assert not reports
 
     @contextlib.contextmanager
-    def monkey_patch_system_message(self):
-        reports = []
+    def monkey_patch_system_message(self) -> Iterator[list[str | Exception]]:
+        reports: list[str | Exception] = []
         orig = docutils.utils.Reporter.system_message
 
-        def system_message(reporter, level, message, *children, **kwargs):
+        def system_message(
+            reporter: docutils.utils.Reporter,
+            level: int,
+            message: str | Exception,
+            *children: docutils.nodes.Node,
+            **kwargs: Any,
+        ) -> docutils.nodes.system_message:
             result = orig(reporter, level, message, *children, **kwargs)
             if level >= reporter.WARNING_LEVEL:
                 # All reST failures preventing doc publishing go to reports
@@ -52,17 +75,14 @@ class CheckdocsItem(pytest.Item):
 
             return result
 
-        docutils.utils.Reporter.system_message = system_message
+        docutils.utils.Reporter.system_message = system_message  # type: ignore[assignment] # type-stubs expands the kwargs
         yield reports
-        docutils.utils.Reporter.system_message = orig
+        docutils.utils.Reporter.system_message = orig  # type: ignore[method-assign]
 
-    def get_long_description(self):
+    def get_long_description(self) -> Description:
         return Description.from_md(metadata.load('.'))
 
     @staticmethod
-    def rst2html(value):
-        docutils_settings = {}
-        parts = docutils.core.publish_parts(
-            source=value, writer_name="html4css1", settings_overrides=docutils_settings
-        )
-        return parts['whole']
+    def rst2html(value: str) -> str:
+        parts = docutils.core.publish_parts(source=value, writer_name="html4css1")
+        return parts['whole']  # type: ignore[no-any-return] # python/typeshed#12595

@@ -14,7 +14,7 @@
 .. image:: https://readthedocs.org/projects/pytest-checkdocs/badge/?version=latest
    :target: https://pytest-checkdocs.readthedocs.io/en/latest/?badge=latest
 
-.. image:: https://img.shields.io/badge/skeleton-2024-informational
+.. image:: https://img.shields.io/badge/skeleton-2025-informational
    :target: https://blog.jaraco.com/skeleton
 
 A pytest plugin that checks the long description of the project to ensure it

@@ -66,10 +66,12 @@ enabler = [
 
 type = [
 	# upstream
-	"pytest-mypy",
+	"pytest-mypy; platform_python_implementation != 'PyPy'", # mypy relies on librt which doesn't build on PyPy
 
 	# local
 	"types-docutils", # pytest-checkdocs#13
+	"importlib_metadata; python_version < '3.12'", # Only used for annotations, not at runtime
+	"pytest>=8.3.3" # Typing fixes not necessary at runtime
 ]
 
 
@@ -78,7 +80,3 @@ pytest11 = {checkdocs = "pytest_checkdocs"}
 
 
 [tool.setuptools_scm]
-
-
-[tool.pytest-enabler.mypy]
-# Disabled due to jaraco/skeleton#143

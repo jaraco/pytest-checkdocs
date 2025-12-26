@@ -1,11 +1,14 @@
+from __future__ import annotations
+
 import importlib.metadata
+from typing import Any, Callable
 
 from docutils import writers
 
 version = importlib.metadata.version('docutils')
 
 
-def _instance_from_name(name):
+def _instance_from_name(name: str) -> writers.Writer[Any]:
     """
     As of docutils 0.22, writer_name got merged into writer.
     ``writer_name`` is now deprecated.
@@ -16,8 +19,10 @@ def _instance_from_name(name):
     return writers.get_writer_class(name)()
 
 
-def identity(x):
-    return x
+def identity(name: str) -> str:
+    return name
 
 
-writer = identity if version >= '0.22' else _instance_from_name
+writer: Callable[[str], str | writers.Writer[Any]] = (
+    identity if version >= '0.22' else _instance_from_name
+)

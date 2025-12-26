@@ -73,6 +73,8 @@ type = [
 
 	# local
 	"types-docutils", # pytest-checkdocs#13
+	"importlib_metadata; python_version < '3.12'",
+	"pytest>=8.3.3" # Typing fixes not necessary at runtime
 ]
 
 
@@ -81,7 +83,3 @@ pytest11 = {checkdocs = "pytest_checkdocs"}
 
 
 [tool.setuptools_scm]
-
-
-[tool.pytest-enabler.mypy]
-# Disabled due to jaraco/skeleton#143

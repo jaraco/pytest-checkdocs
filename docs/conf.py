@@ -34,13 +34,6 @@ link_files = {
 nitpicky = True
 nitpick_ignore: list[tuple[str, str]] = []
 
-nitpick_ignore = [
-    ('py:class', '_pytest.nodes.Item'),
-    ('py:class', 'Config'),
-    ('py:class', 'Path'),
-    ('py:class', 'Session'),
-]
-
 # Include Python intersphinx mapping to prevent failures
 # jaraco/skeleton#51
 extensions += ['sphinx.ext.intersphinx']
@@ -65,3 +58,13 @@ extensions += ['sphinx.ext.extlinks']
 intersphinx_mapping.update(
     pytest=('https://docs.pytest.org/en/latest/', None),
 )
+
+# local
+
+nitpick_ignore += [
+    ('py:class', 'Config'),
+    ('py:class', 'Session'),
+    # jaraco/pytest-checkdocs#25
+    ('py:class', 'PackageMetadata'),
+    ('py:class', 'Node'),
+]

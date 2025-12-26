@@ -2,10 +2,9 @@ import contextlib
 import pathlib
 import re
 
-import pytest
 import docutils.core
+import pytest
 from jaraco.packaging import metadata
-
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
 

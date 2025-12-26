@@ -6,6 +6,8 @@ import docutils.core
 import pytest
 from jaraco.packaging import metadata
 
+from .compat import docutils21
+
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
 
 
@@ -60,8 +62,7 @@ class CheckdocsItem(pytest.Item):
 
     @staticmethod
     def rst2html(value):
-        parts = docutils.core.publish_parts(
+        return docutils.core.publish_parts(
             source=value,
-            writer_name="html4css1",
-        )
-        return parts['whole']
+            writer=docutils21.writer('html4css1'),
+        )['whole']

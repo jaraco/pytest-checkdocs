@@ -1,3 +1,14 @@
+v2.14.0
+=======
+
+Features
+--------
+
+- Complete annotations and add ``py.typed`` marker -- by :user:`Avasam` (#25)
+- Implemented full strict type checking. (#25)
+- Satisfy deprecation warning introduced in docutils 0.22. (#26)
+
+
 v2.13.0
 =======
 

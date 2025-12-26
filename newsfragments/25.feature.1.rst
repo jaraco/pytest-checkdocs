@@ -1,1 +1,0 @@
-Implemented full strict type checking.

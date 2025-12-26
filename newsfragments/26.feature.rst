@@ -1,1 +1,0 @@
-Satisfy deprecation warning introduced in docutils 0.22.

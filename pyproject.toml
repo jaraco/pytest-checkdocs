@@ -73,7 +73,7 @@ type = [
 
 	# local
 	"types-docutils", # pytest-checkdocs#13
-	"importlib_metadata; python_version < '3.12'", # Only used for annotations, not at runtime
+	"importlib_metadata; python_version < '3.12'",
 	"pytest>=8.3.3" # Typing fixes not necessary at runtime
 ]
 

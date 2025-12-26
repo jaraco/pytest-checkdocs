@@ -13,6 +13,8 @@ import docutils.utils
 import pytest
 from jaraco.packaging import metadata
 
+from .compat import docutils21
+
 if TYPE_CHECKING:
     if sys.version_info >= (3, 12):
         from importlib.metadata import PackageMetadata
@@ -84,5 +86,7 @@ class CheckdocsItem(pytest.Item):
 
     @staticmethod
     def rst2html(value: str) -> str | bytes:
-        parts = docutils.core.publish_parts(source=value, writer_name="html4css1")
-        return parts['whole']
+        return docutils.core.publish_parts(
+            source=value,
+            writer=docutils21.writer('html4css1'),
+        )['whole']

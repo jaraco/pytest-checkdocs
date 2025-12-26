@@ -60,8 +60,8 @@ class CheckdocsItem(pytest.Item):
 
     @staticmethod
     def rst2html(value):
-        docutils_settings = {}
         parts = docutils.core.publish_parts(
-            source=value, writer_name="html4css1", settings_overrides=docutils_settings
+            source=value,
+            writer_name="html4css1",
         )
         return parts['whole']

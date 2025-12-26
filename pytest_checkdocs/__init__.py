@@ -4,8 +4,9 @@ import re
 
 import docutils.core
 import pytest
-from docutils import writers
 from jaraco.packaging import metadata
+
+from .compat import docutils21
 
 project_files = 'setup.py', 'setup.cfg', 'pyproject.toml'
 
@@ -63,9 +64,5 @@ class CheckdocsItem(pytest.Item):
     def rst2html(value):
         return docutils.core.publish_parts(
             source=value,
-            # As of docutils 0.22, writer_name got merged into writer.
-            # writer_name is now deprecated.
-            # writer now supports a string and will automatically get the writer class instance,
-            # but previous versions won't. So we get an instance ourselves.
-            writer=writers.get_writer_class("html4css1")(),
+            writer=docutils21.writer('html4css1'),
         )['whole']
